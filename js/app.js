@@ -13,23 +13,24 @@ function shuffle(array) {
     return array;
 }
 
-/*  Create a list that holds all of your cards */
+//  Create a list that holds all of your cards
 let cardsList = ['fa-diamond','fa-paper-plane-o','fa-anchor','fa-cube','fa-leaf', 'fa-bicycle', 'fa-bomb', 'fa-bolt', 'fa-diamond','fa-paper-plane-o','fa-anchor','fa-cube','fa-leaf', 'fa-bicycle', 'fa-bomb', 'fa-bolt'];
 
-/* shuffle cards */
+// shuffle cards
 shuffle(cardsList)
 
-/* get card elements on page */
+// get card elements on page
 let cardsElements = document.getElementsByClassName("customFa");
 
-/* get cards */
+// get cards
 let cards = document.getElementsByClassName("card");
 
-/* add card faces to elements */
+// add card faces to elements
 for (let i = 0; i < cardsElements.length; i++) {
       cardsElements[i].className += cardsList[i] ;
 }
 
+//
 for(var i=0; i< cards.length; i++) {
   cards[i].addEventListener("click", toggleClass(i));
 }
@@ -39,12 +40,10 @@ let recentlyClicked = [];
 // change elements to hidden
 function changeElementsToHidden(){
     setTimeout(function(){
-      console.log("hji")
-    }, 2000);
      // remove open show classes
      recentlyClicked[0].classList.remove("open", "show");
      recentlyClicked[1].classList.remove("open", "show");
-
+    }, 2000);
 }
 
 // change recently clicked elements to matched
@@ -64,6 +63,10 @@ function toggleClass(i) {
    /* check if item is already shown */
    else if(cards[i].classList.contains('open' || 'show')){
     return;
+   } else if(recentlyClicked.length == 3){
+     // remove clicked elements
+     recentlyClicked.splice(0, 3);
+     return;
    }
 
    // add class show and open to show card element
@@ -81,11 +84,12 @@ function toggleClass(i) {
        // remove clicked elements
        recentlyClicked.splice(0, 2);
        return;
-     }
-       // hide elements
-       changeElementsToHidden();
-     // remove recently clicked items from array
-     recentlyClicked.splice(0, 2);
+     } else {
+           // hide elements
+           changeElementsToHidden();
+           // remove recently clicked items from array
+           recentlyClicked.splice(0, 2);
+       }
    }
 
   }
