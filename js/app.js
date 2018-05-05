@@ -13,7 +13,7 @@ function shuffle(array) {
     return array;
 }
 
-//  Create a list that holds all of your cards
+// Create a list that holds all of your cards
 let cardsList = ['fa-diamond','fa-paper-plane-o','fa-anchor','fa-cube','fa-leaf', 'fa-bicycle', 'fa-bomb', 'fa-bolt', 'fa-diamond','fa-paper-plane-o','fa-anchor','fa-cube','fa-leaf', 'fa-bicycle', 'fa-bomb', 'fa-bolt'];
 
 // shuffle cards
@@ -30,7 +30,6 @@ for (let i = 0; i < cardsElements.length; i++) {
       cardsElements[i].className += cardsList[i] ;
 }
 
-//
 for(var i=0; i< cards.length; i++) {
   cards[i].addEventListener("click", toggleClass(i));
 }
@@ -40,10 +39,12 @@ let recentlyClicked = [];
 // change elements to hidden
 function changeElementsToHidden(){
     setTimeout(function(){
+      console.log("hi")
+    }, 2000);
      // remove open show classes
      recentlyClicked[0].classList.remove("open", "show");
      recentlyClicked[1].classList.remove("open", "show");
-    }, 2000);
+
 }
 
 // change recently clicked elements to matched
@@ -56,17 +57,13 @@ function changeElementsToMatched(){
 
 function toggleClass(i) {
   return function(){
-    /* check if card is a match*/
+    // check if card is a match
    if(cards[i].classList.contains('match')){
     return;
    }
-   /* check if item is already shown */
+   // check if item is already shown
    else if(cards[i].classList.contains('open' || 'show')){
     return;
-   } else if(recentlyClicked.length == 3){
-     // remove clicked elements
-     recentlyClicked.splice(0, 3);
-     return;
    }
 
    // add class show and open to show card element
@@ -84,12 +81,11 @@ function toggleClass(i) {
        // remove clicked elements
        recentlyClicked.splice(0, 2);
        return;
-     } else {
-           // hide elements
-           changeElementsToHidden();
-           // remove recently clicked items from array
-           recentlyClicked.splice(0, 2);
-       }
+     }
+       // hide elements
+       changeElementsToHidden();
+     // remove recently clicked items from array
+     recentlyClicked.splice(0, 2);
    }
 
   }
