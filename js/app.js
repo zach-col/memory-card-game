@@ -14,7 +14,10 @@ function shuffle(array) {
 }
 
 // Create a list that holds all of your cards
-let cardsList = ['fa-diamond','fa-paper-plane-o','fa-anchor','fa-cube','fa-leaf', 'fa-bicycle', 'fa-bomb', 'fa-bolt', 'fa-diamond','fa-paper-plane-o','fa-anchor','fa-cube','fa-leaf', 'fa-bicycle', 'fa-bomb', 'fa-bolt'];
+let cardsList = ["fa-diamond","fa-paper-plane-o","fa-anchor","fa-cube","fa-leaf", "fa-bicycle", "fa-bomb", "fa-bolt", "fa-diamond","fa-paper-plane-o","fa-anchor","fa-cube","fa-leaf", "fa-bicycle", "fa-bomb", "fa-bolt"];
+
+// amount of matched cards
+let cardsMatchedCount = 0;
 
 // shuffle cards
 shuffle(cardsList)
@@ -41,6 +44,7 @@ function changeElementsToHidden(){
     setTimeout(function(){
       console.log("hi")
     }, 2000);
+
      // remove open show classes
      recentlyClicked[0].classList.remove("open", "show");
      recentlyClicked[1].classList.remove("open", "show");
@@ -49,37 +53,53 @@ function changeElementsToHidden(){
 
 // change recently clicked elements to matched
 function changeElementsToMatched(){
-     changeElementsToHidden()
      // add matched
      recentlyClicked[0].classList.add("match");
      recentlyClicked[1].classList.add("match");
+     changeElementsToHidden()
 }
+
+var add = (function () {
+  var counter = 0;
+  return function () {return counter +=1;}
+})();
+
+function movesCount(){
+  document.getElementById("movesCount").innerHTML = add();
+}
+
 
 function toggleClass(i) {
   return function(){
     // check if card is a match
-   if(cards[i].classList.contains('match')){
+   if(cards[i].classList.contains("match")){
     return;
    }
    // check if item is already shown
-   else if(cards[i].classList.contains('open' || 'show')){
+   else if(cards[i].classList.contains("open" || "show")){
     return;
    }
 
    // add class show and open to show card element
    cards[i].classList.add("open","show");
-
    // add card element to recentyClicked array
    recentlyClicked.unshift(cards[i])
 
    // check if 2 cards have been clicked
    if(recentlyClicked.length == 2){
+      // counter moves
+      movesCount();
      // compare if recently clicked cards are a match
      if(recentlyClicked[0].isEqualNode(recentlyClicked[1])){
        // change recently clicked to matched styling
        changeElementsToMatched();
        // remove clicked elements
        recentlyClicked.splice(0, 2);
+       // add 1 to cards matched
+       cardsMatchedCount +=1;
+       if(cardsMatchedCount === cardsList.length / 2){
+           alert("you won");
+       }
        return;
      }
        // hide elements
