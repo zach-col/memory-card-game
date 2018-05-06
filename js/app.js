@@ -41,9 +41,6 @@ let recentlyClicked = [];
 
 // change elements to hidden
 function changeElementsToHidden(){
-    setTimeout(function(){
-      console.log("hi")
-    }, 2000);
 
      // remove open show classes
      recentlyClicked[0].classList.remove("open", "show");
@@ -71,6 +68,9 @@ function movesCount(){
 
 function toggleClass(i) {
   return function(){
+   if(recentlyClicked.length >= 3){
+       return;
+   }
     // check if card is a match
    if(cards[i].classList.contains("match")){
     return;
@@ -102,10 +102,18 @@ function toggleClass(i) {
        }
        return;
      }
-       // hide elements
-       changeElementsToHidden();
-     // remove recently clicked items from array
-     recentlyClicked.splice(0, 2);
+     //   // hide elements
+     //   changeElementsToHidden();
+     // // remove recently clicked items from array
+     // recentlyClicked.splice(0, 2);
+      else{
+          setTimeout(function(){
+             changeElementsToHidden()
+             recentlyClicked.splice(0, 2);
+
+         },1000);
+
+          }
    }
 
   }
