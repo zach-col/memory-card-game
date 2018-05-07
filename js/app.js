@@ -19,19 +19,42 @@ let cardsList = ["fa-diamond","fa-paper-plane-o","fa-anchor","fa-cube","fa-leaf"
 // amount of matched cards
 let cardsMatchedCount = 0;
 
-// shuffle cards
-shuffle(cardsList)
+// get cards
+let cards = document.getElementsByClassName("card");
 
 // get card elements on page
 let cardsElements = document.getElementsByClassName("customFa");
 
-// get cards
-let cards = document.getElementsByClassName("card");
-
-// add card faces to elements
-for (let i = 0; i < cardsElements.length; i++) {
-      cardsElements[i].className += cardsList[i] ;
+// add card face to all elements
+function addCardFaceToElement(){
+    // shuffle cards
+    shuffle(cardsList)
+    // add card faces to elements
+    for (let i = 0; i < cardsElements.length; i++) {
+          cardsElements[i].className += cardsList[i] ;
+    }
 }
+
+// reset all cards to hidden
+function resetAllCardsToHidden(){
+    // add card faces to elements
+    for (let i = 0; i < cards.length; i++) {
+          cards[i].className = "card" ;
+    }
+}
+
+// reset all cards to hidden
+function shuffleAllCardsElements(){
+    // shuffle cards elements
+    shuffle(cardsList)
+    // add card faces to elements
+    for (let i = 0; i < cardsElements.length; i++) {
+          cardsElements[i].className = "customFa fa " + cardsList[i];
+    }
+}
+
+// add card face to all elements
+addCardFaceToElement();
 
 for(var i=0; i< cards.length; i++) {
   cards[i].addEventListener("click", toggleClass(i));
@@ -56,21 +79,27 @@ function changeElementsToMatched(){
      changeElementsToHidden()
 }
 
-var add = (function () {
-  var counter = 0;
+let counter = 0
+
+// add to moves count
+let add = (function () {
   return function () {return counter +=1;}
 })();
-
 function movesCount(){
   document.getElementById("movesCount").innerHTML = add();
+}
+
+// reset moves count
+let reset = (function () {
+  return function () {return counter = 0;}
+})();
+function resetMovesCount(){
+  document.getElementById("movesCount").innerHTML = reset();
 }
 
 
 function toggleClass(i) {
   return function(){
-   if(recentlyClicked.length >= 3){
-       return;
-   }
     // check if card is a match
    if(cards[i].classList.contains("match")){
     return;
@@ -106,19 +135,28 @@ function toggleClass(i) {
      //   changeElementsToHidden();
      // // remove recently clicked items from array
      // recentlyClicked.splice(0, 2);
-      else{
-          setTimeout(function(){
+             setTimeout(function(){
              changeElementsToHidden()
              recentlyClicked.splice(0, 2);
 
-         },1000);
+         },300);
 
-          }
    }
 
   }
 }
 
+function restartGame(){
+    // reset all cards to hidden
+    resetAllCardsToHidden()
+    // shuffle all cards elements
+    shuffleAllCardsElements();
+    // remove clicked elements
+    recentlyClicked.splice(0, 2);
+
+    // reset moves count
+    resetMovesCount();
+}
 
 
 
