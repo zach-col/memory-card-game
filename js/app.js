@@ -13,6 +13,9 @@ function shuffle(array) {
     return array;
 }
 
+// get stars score elements
+let stars = document.querySelector(".stars");
+
 // Create a list that holds all of your cards
 let cardsList = ["fa-diamond","fa-paper-plane-o","fa-anchor","fa-cube","fa-leaf", "fa-bicycle", "fa-bomb", "fa-bolt", "fa-diamond","fa-paper-plane-o","fa-anchor","fa-cube","fa-leaf", "fa-bicycle", "fa-bomb", "fa-bolt"];
 
@@ -21,6 +24,9 @@ let cardsMatchedCount = 0;
 
 // get cards
 let cards = document.getElementsByClassName("card");
+
+// get stars for score
+let scoreStars = document.getElementsByClassName("fa-star");
 
 // get card elements on page
 let cardsElements = document.getElementsByClassName("customFa");
@@ -79,11 +85,19 @@ function changeElementsToMatched(){
      changeElementsToHidden()
 }
 
+// counter for moves
 let counter = 0
 
 // add to moves count
 let add = (function () {
-  return function () {return counter +=1;}
+  return function () {
+      // remove star if counter is 8 or 16
+      if(counter == 8 || counter == 16){
+          stars.removeChild(stars.childNodes[0]);
+          stars.removeChild(stars.childNodes[0]);
+      }
+      return counter +=1;
+  }
 })();
 function movesCount(){
   document.getElementById("movesCount").innerHTML = add();
@@ -96,7 +110,6 @@ let reset = (function () {
 function resetMovesCount(){
   document.getElementById("movesCount").innerHTML = reset();
 }
-
 
 function toggleClass(i) {
   return function(){
@@ -131,21 +144,36 @@ function toggleClass(i) {
        }
        return;
      }
-     //   // hide elements
-     //   changeElementsToHidden();
-     // // remove recently clicked items from array
-     // recentlyClicked.splice(0, 2);
-             setTimeout(function(){
-             changeElementsToHidden()
-             recentlyClicked.splice(0, 2);
 
-         },300);
+     setTimeout(function(){
+         changeElementsToHidden()
+         recentlyClicked.splice(0, 2);
+
+     },300);
 
    }
 
   }
 }
 
+// reset star count
+function resetStarCount(i){
+    for(let count = 0; count < i; count ++){
+      //create li element
+      let li = document.createElement("LI");
+      // create i element
+      let i = document.createElement("i");
+      // add class to i element
+      i.className = "fa fa-star";
+      // add i element to li element
+      li.appendChild(i);
+      // add li to stars score
+      document.querySelector(".stars").appendChild(li);
+    }
+
+}
+
+// restart game function
 function restartGame(){
     // reset all cards to hidden
     resetAllCardsToHidden()
@@ -153,23 +181,14 @@ function restartGame(){
     shuffleAllCardsElements();
     // remove clicked elements
     recentlyClicked.splice(0, 2);
-
     // reset moves count
     resetMovesCount();
+    // get stars score count
+    let starsCount = document.querySelector(".stars").childElementCount;
+    // reset star count
+    if(starsCount == 1){
+        resetStarCount(2);
+    } else if(starsCount == 2){
+        resetStarCount(1)
+    }
 }
-
-
-
-
-
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
