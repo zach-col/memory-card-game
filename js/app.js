@@ -13,6 +13,10 @@ function shuffle(array) {
     return array;
 }
 
+
+// starting time of game
+let startingTime = 0;
+
 // get stars score elements
 let stars = document.querySelector(".stars");
 
@@ -113,6 +117,12 @@ function resetMovesCount(){
 
 function toggleClass(i) {
   return function(){
+    // stat timer if not already started
+    if(startingTime == 0){
+        // start timer
+        startingTime = performance.now();
+    }
+
     // check if card is a match
    if(cards[i].classList.contains("match")){
     return;
@@ -139,8 +149,18 @@ function toggleClass(i) {
        recentlyClicked.splice(0, 2);
        // add 1 to cards matched
        cardsMatchedCount +=1;
+       // if all cards matched show score
        if(cardsMatchedCount === cardsList.length / 2){
-           alert("you won");
+           endingTime = performance.now();
+           // get stars score count
+           let starsCount = document.querySelector(".stars").childElementCount;
+           // get element to add score
+           let element = document.getElementById("modalText");
+           // text to add to element score
+           let wonText = "You got a score of " + starsCount + " stars in " + counter + " moves" + " in " + (endingTime - startingTime) + ' milliseconds.';
+           // add won text to page
+           element.innerHTML = wonText;
+           openModal();
        }
        return;
      }
@@ -170,7 +190,11 @@ function resetStarCount(i){
       // add li to stars score
       document.querySelector(".stars").appendChild(li);
     }
-
+}
+// reset starting time and ending time
+function resetTime(){
+  startingTime = 0;
+  endingTime = 0;
 }
 
 // restart game function
@@ -191,4 +215,8 @@ function restartGame(){
     } else if(starsCount == 2){
         resetStarCount(1)
     }
+    // reset game time
+    resetTime();
+    // reset cards matched count
+    cardsMatchedCount = 0;
 }
