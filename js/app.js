@@ -116,20 +116,24 @@ function resetMovesCount(){
   document.getElementById("movesCount").innerHTML = reset();
 }
 
+function myTimer() {
+    timer += 1;
+    let showTime = timer
+    document.getElementById("showStartingTime").innerHTML = showTime
+}
+function myStopFunction() {
+    clearInterval(intervalTimer);
+}
+
+// variable for interval function
+let intervalTimer = 0;
 
 function toggleClass(i) {
   return function(){
     if(timer == -1){
       timer = 0;
-      var myVar = setInterval(function(){ myTimer() }, 1000);
-      function myTimer() {
-          timer += 1;
-          let showTime = timer
-          document.getElementById("showStartingTime").innerHTML = showTime
-      }
-      function myStopFunction() {
-          clearInterval(myVar);
-      }
+      intervalTimer = setInterval(function(){ myTimer() }, 1000);
+
     }
 
     // check if card is a match
@@ -234,4 +238,9 @@ function restartGame(){
     closeModal();
     // end counter for time
     myStopFunction();
+    // reset timer
+    timer = -1;
+    // reset timer element
+    document.getElementById("showStartingTime").innerHTML = 0;
+
 }
