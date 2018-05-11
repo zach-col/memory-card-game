@@ -15,7 +15,8 @@ function shuffle(array) {
 
 
 // starting time of game
-let startingTime = 0;
+let timer = -1;
+let timerToggle = true;
 
 // get stars score elements
 let stars = document.querySelector(".stars");
@@ -115,12 +116,20 @@ function resetMovesCount(){
   document.getElementById("movesCount").innerHTML = reset();
 }
 
+
 function toggleClass(i) {
   return function(){
-    // stat timer if not already started
-    if(startingTime == 0){
-        // start timer
-        startingTime = performance.now();
+    if(timer == -1){
+      timer = 0;
+      var myVar = setInterval(function(){ myTimer() }, 1000);
+      function myTimer() {
+          timer += 1;
+          let showTime = timer
+          document.getElementById("showStartingTime").innerHTML = showTime
+      }
+      function myStopFunction() {
+          clearInterval(myVar);
+      }
     }
 
     // check if card is a match
@@ -151,13 +160,15 @@ function toggleClass(i) {
        cardsMatchedCount +=1;
        // if all cards matched show score
        if(cardsMatchedCount === cardsList.length / 2){
-           endingTime = performance.now();
+           myStopFunction()
            // get stars score count
            let starsCount = document.querySelector(".stars").childElementCount;
            // get element to add score
            let element = document.getElementById("modalText");
+           // get timer show time
+           let showTime = document.getElementById("showStartingTime").innerHTML;
            // text to add to element score
-           let wonText = "You got a score of " + starsCount + " stars in " + counter + " moves" + " in " + (endingTime - startingTime) + ' milliseconds.';
+           let wonText = "You got a score of " + starsCount + " stars in " + counter + " moves" + " in " + showTime + ' seconds.';
            // add won text to page
            element.innerHTML = wonText;
            openModal();
@@ -219,4 +230,8 @@ function restartGame(){
     resetTime();
     // reset cards matched count
     cardsMatchedCount = 0;
+    // close popup modal
+    closeModal();
+    // end counter for time
+    myStopFunction();
 }
